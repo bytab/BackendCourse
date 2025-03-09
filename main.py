@@ -11,10 +11,8 @@ hotels = [
 
 
 @app.get("/hotels")
-def get_hotels(
-        title: str | None = Query(None, description="Hotel title"),
-):
-    return [hotel for hotel in hotels if hotel ["title"] == title]
+def get_hotels():
+    return hotels
 
 
 
