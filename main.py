@@ -1,21 +1,12 @@
-from fastapi import FastAPI,Query
+from fastapi import FastAPI
 import uvicorn
+
+from hotels import router_hotels
 
 app = FastAPI()
 
-hotels = [
-    {"id": 1, "title": "Hotel A", "price": 100},
-    {"id": 2, "title": "Hotel B", "price": 200},
-    {"id": 3, "title": "Hotel C", "price": 300},
-]
-
-
-@app.get("/hotels")
-def get_hotels():
-    return hotels
-
-
+app.include_router(router_hotels)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True, port=8002)
+    uvicorn.run("main:app", reload=True)
