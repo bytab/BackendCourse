@@ -16,8 +16,11 @@ hotels = [
 
 ]
 
-@router.get("")
+@router.get("",
+            summary="Получение списка отелей",
+            description="Получение списка отелей с возможностью фильтрации")
 def get_hotels(
+
         id: int | None = Query(None, description="Айдишник"),
         title: str | None = Query(None, description="Название отеля"),
         page: int | None = Query(1, description="Номер страницы"),
@@ -73,7 +76,7 @@ def edit_hotel(hotel_id: int, hotel_data: Hotel):
 @router.patch(
     "/{hotel_id}",
     summary="Частичное обновление данных об отеле",
-    description="<h1>Тут мы частично обновляем данные об отеле: можно отправить name, а можно title</h1>",
+    description="Тут мы частично обновляем данные об отеле: можно отправить name, а можно title",
 )
 def partially_edit_hotel(
         hotel_id: int,
