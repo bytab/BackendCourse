@@ -12,16 +12,16 @@ router = APIRouter(prefix="/hotels", tags=["Отели"])
 @router.get("")
 async def get_hotels(
          pagination: PaginationDep,
-         id: int | None = Query(None, description="Айдишник"),
+         location: str | None = Query(None, description="Локация отеля(Город или улица)"),
          title: str | None = Query(None, description="Название отеля"),
 ):
     per_page = pagination.per_page or 5
     async with async_session_maker() as session:
         query = select(HotelsORM)
-        if id:
-            query=query.filter_by(id=id)
+        if location:
+            query=query.where(HotelsORM.location.ilike(f"%{location}%"))
         if title:
-            query = query.filter_by(title=title)
+            query = query.where(HotelsORM.title.ilike(f"%{title}%"))
         query = (
             query
             .limit(per_page)
@@ -39,17 +39,73 @@ async def get_hotels(
 @router.post("")
 async def create_hotel(hotel_data: Hotel = Body(openapi_examples={
     "1": {
-        "summary": "Сочи",
+        "summary": "New York",
         "value": {
-            "title": "Отель Сочи 5 звезд у моря",
-            "location": "sochi_u_morya",
+            "title": "New York Skyline Apartment",
+            "location": "New York, 5th Avenue"
         }
     },
     "2": {
-        "summary": "Дубай",
+        "summary": "London",
         "value": {
-            "title": "Отель Дубай У фонтана",
-            "location": "dubai_fountain",
+            "title": "London River View",
+            "location": "London, Baker Street"
+        }
+    },
+    "3": {
+        "summary": "Paris",
+        "value": {
+            "title": "Paris Eiffel Retreat",
+            "location": "Paris, Champs-Élysées"
+        }
+    },
+    "4": {
+        "summary": "Tokyo",
+        "value": {
+            "title": "Tokyo Central Apartment",
+            "location": "Tokyo, Shibuya"
+        }
+    },
+    "5": {
+        "summary": "Sydney",
+        "value": {
+            "title": "Sydney Harbour Residence",
+            "location": "Sydney, George Street"
+        }
+    },
+    "6": {
+        "summary": "Berlin",
+        "value": {
+            "title": "Berlin Historic Loft",
+            "location": "Berlin, Friedrichstraße"
+        }
+    },
+    "7": {
+        "summary": "Toronto",
+        "value": {
+            "title": "Toronto Downtown Suite",
+            "location": "Toronto, Yonge Street"
+        }
+    },
+    "8": {
+        "summary": "Moscow",
+        "value": {
+            "title": "Moscow Kremlin View",
+            "location": "Moscow, Tverskaya Street"
+        }
+    },
+    "9": {
+        "summary": "Dubai",
+        "value": {
+            "title": "Dubai Marina Luxury",
+            "location": "Dubai, Sheikh Zayed Road"
+        }
+    },
+    "10": {
+        "summary": "Rome",
+        "value": {
+            "title": "Rome Colosseum View",
+            "location": "Rome, Via del Corso"
         }
     }
 })
