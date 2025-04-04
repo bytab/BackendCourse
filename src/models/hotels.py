@@ -2,7 +2,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 from sqlalchemy import String
 from src.database import Base
 
-class HotelsORM(Base):
+class HotelsOrm(Base):
     __tablename__ = "hotels"
 
     id: Mapped [int] = mapped_column(primary_key=True)
